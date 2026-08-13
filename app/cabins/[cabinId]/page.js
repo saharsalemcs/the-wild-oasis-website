@@ -12,7 +12,7 @@ export default async function Page({ params }) {
   const { cabinId } = await params;
 
   const cabin = await getCabin(cabinId);
-  const { id, name, maxCapacity, regularPrice, discount, image, description } =
+  const { name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
 
   return (

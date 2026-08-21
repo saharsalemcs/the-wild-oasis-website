@@ -137,15 +137,30 @@ export async function getSettings() {
 export async function getCountries() {
   try {
     const res = await fetch(
-      "https://restcountries.com/v2/all?fields=name,flag",
+      "https://restcountries.com/v3.1/all?fields=name,flags",
+      {
+        next: {
+          revalidate: 86400,
+        },
+      },
     );
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch countries: ${res.status}`);
+    }
+
     const countries = await res.json();
+
+    if (!Array.isArray(countries)) {
+      throw new Error("Invalid countries data");
+    }
+
     return countries;
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error("Could not fetch countries");
   }
 }
-
 /////////////
 // CREATE
 

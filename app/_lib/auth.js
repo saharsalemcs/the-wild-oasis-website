@@ -9,36 +9,36 @@ const authConfig = {
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
   ],
-
   callbacks: {
     authorized({ auth, request }) {
       return !!auth?.user;
     },
-
-    // runs actually before the actual sing up process happens -- work as a proxy/middleware
-    async signIn({ user, profile, account }) {
+    async signIn({ user, account, profile }) {
       try {
         const existingGuest = await getGuest(user.email);
+
         if (!existingGuest)
           await createGuest({ email: user.email, fullName: user.name });
+
         return true;
       } catch {
         return false;
       }
     },
     async session({ session, user }) {
-      console.log(session);
       const guest = await getGuest(session.user.email);
       session.user.guestId = guest.id;
       return session;
     },
   },
-  pages: { signIn: "/login" },
+  pages: {
+    signIn: "/login",
+  },
 };
 
 export const {
-  handlers: { GET, POST },
   auth,
   signIn,
   signOut,
+  handlers: { GET, POST },
 } = NextAuth(authConfig);

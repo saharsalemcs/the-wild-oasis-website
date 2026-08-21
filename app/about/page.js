@@ -1,5 +1,6 @@
 import Image from "next/image";
 import image1 from "@/public/about-1.jpg";
+import image2 from "@/public/about-2.jpg";
 import { getCabins } from "../_lib/data-service";
 import Link from "next/link";
 
@@ -44,16 +45,17 @@ export default async function Page() {
       <div className="col-span-2">
         <Image
           src={image1}
-          placeholder="blur"
           alt="Family sitting around a fire pit in front of cabin"
+          placeholder="blur"
+          quality={80}
         />
       </div>
 
-      <div className="col-span-2 relative aspect-square">
+      <div className="relative aspect-square col-span-2">
         <Image
           src="/about-2.jpg"
-          className="object-cover"
           fill
+          className="object-cover"
           alt="Family that manages The Wild Oasis"
         />
       </div>
